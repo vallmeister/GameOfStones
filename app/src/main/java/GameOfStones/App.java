@@ -4,11 +4,55 @@
 package GameOfStones;
 
 public class App {
+    private static App instance;
+    private static String[][] map;
+
+    private App(){
+        map = initializeMap();
+    }
+
+    private String[][] initializeMap() {
+        String[][] map = new String[13][];
+        for (int i = 0; i < map.length; i++)
+            map[i] = new String[11];
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (i % 4 == 0 && j % 2 == 0)
+                    map[i][j] = "-";
+                else if (i % 4 == 0 && j % 2 == 1) {
+                    map[i][j] = "----------";
+                }
+                else if (j % 2 == 0)
+                    map[i][j] = "|";
+                else if ((i > 0 && i < 4 || i > 8 && i < 12) && j % 4 == 1 || i > 4 && i < 8 && j % 4 == 3)
+                    map[i][j] = String.format("%1$10s", "").replace(" ", "w");
+                else
+                    map[i][j] = String.format("%1$10s", "");
+            }
+        }
+
+        return map;
+    }
+    public static App getApp() {
+        if (instance == null) instance = new App();
+        return instance;
+    }
     public String getGreeting() {
-        return "Hello World!";
+        return "Welcome to Game of Stones";
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        App game = getApp();
+        System.out.println(game.getGreeting());
+        int i = 2;
+        while (i > 0) {
+            i--;
+            game.printMap();
+        }
+    }
+    private void printMap() {
+        for (int i = 0; i < map.length; i++) {
+            System.out.println(String.join(" ", map[i]));
+        }
     }
 }
